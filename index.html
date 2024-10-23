@@ -186,7 +186,6 @@
                 <li>Удерживая клавишу Ctrl, можно выбрать несколько номенклатур одновременно.</li>
             </ul> -->
             * После выбора номенклатурной группы можно будет выбрать либо все номенклатуры из данной группы, либо те, на которые будет запланирована выручка.</br>
-            * Удерживая клавишу Ctrl, можно выбрать несколько номенклатур одновременно.<br>
             <br>
             После выбора необходимых номенклатур по комбинации Контрагент-Конечник-НГ необходимо нажать кнопку «Добавить». Данные будут добавлены в таблицу.
             
@@ -194,7 +193,7 @@
             
             <br>Когда все данные добавлены, нажмите кнопку Скачать Excel.
             
-            Файл появится в Загрузках. Пожалуйста, зайдите и проверьте корректность данных. Затем направьте данный файл Анжеле Ананян для добавления в ваш шаблон.
+            Файл появится в Загрузках. <b>Пожалуйста, зайдите и проверьте корректность и полноту данных</b>. Затем направьте данный файл Анжеле Ананян для добавления в ваш шаблон.
             
             <br>
         </p>
@@ -240,13 +239,13 @@
     <div class="button-group">
         <button id="downloadBtn">Скачать Excel</button>
     </div>
-    <br>
-    <br>
+    <br><br><br><br><br><br><br><br><br>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-style/0.8.13/xlsx.full.min.js"></script>
 <script src="agents.js"></script> <!-- Подключаем файл со словарем agents -->
 <script src="goods.js"></script> <!-- Подключаем файл со словарем goods -->
 
@@ -432,16 +431,33 @@
         }
 
         $('#downloadBtn').on('click', function() {
-            if (excelData.length === 0) {
-                alert("Нет данных для скачивания");
-                return;
-            }
+    if (excelData.length === 0) {
+        alert("Нет данных для скачивания");
+        return;
+    }
 
-            let wb = XLSX.utils.book_new();
-            let ws = XLSX.utils.aoa_to_sheet(excelData);
-            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-            XLSX.writeFile(wb, "selection.xlsx");
-        });
+    let wb = XLSX.utils.book_new();
+    let ws = XLSX.utils.aoa_to_sheet(excelData);
+
+    // Применение серого фона для первой строки
+    const range = XLSX.utils.decode_range(ws['!ref']);
+    for (let col = range.s.c; col <= range.e.c; col++) {
+        const cellAddress = XLSX.utils.encode_cell({r: 0, c: col}); // Ячейки первой строки
+        if (!ws[cellAddress]) continue; // Если ячейка не существует
+        ws[cellAddress].s = {
+            fill: {
+                fgColor: { rgb: "C0C0C0" } // Серый цвет
+            },
+            font: {
+                bold: true // Жирный шрифт для заголовков
+            }
+        };
+    }
+
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, `${userNameGlobal}.xlsx`); 
+});
+
     });
 </script>
 
