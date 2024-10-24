@@ -5,200 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Dropdowns</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-    <style>
-        @font-face {
-            font-family: 'DIN Pro';
-            src: url('https://example.com/fonts/DINPro-Regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-        }
-
-        body {
-            font-family: 'DIN Pro', sans-serif;
-            color: #2b2765;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-            margin: 0;
-            padding-top: 50px;
-        }
-
-        #header {
-            width: 100%;
-            height: 60px;
-            background-color: #5C4B9A;
-            position: fixed;
-            top: 0;
-            left: 0;
-        }
-
-        #logo {
-            margin-bottom: 5px;
-            margin-top: 20px;
-        }
-
-        #logo img {
-            width: 300px;
-            height: auto;
-        }
-
-        #namePage, #dropdownPage {
-            display: none;
-            text-align: center;
-        }
-
-        .dropdown-wrapper {
-            display: flex;
-            flex-direction: column; /* Направление по вертикали */
-            align-items: center;
-            width: 100%;
-        }
-
-        .dropdown-container {
-            display: flex; /* Flexbox для размещения элементов в строку */
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            max-width: 1000px;
-        }
-
-        .instruction-wrapper {
-            width: 100%;
-            max-width: 1000px; /* Ширина должна совпадать с шириной контейнера dropdown */
-            text-align: justify;
-            margin-bottom: 20px;
-        }
-
-        .dropdown-element {
-            flex-grow: 1; /* Элементы занимают пропорционально доступное пространство */
-        }
-
-        button {
-            padding: 10px 20px;
-            font-family: 'DIN Pro', sans-serif;
-            color: white;
-            background-color: #5C4B9A;
-            border: none;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #5C4B9A;
-        }
-
-        select {
-            width: 200px;
-            border: 1px solid #ccc;
-            padding: 5px;
-        }
-
-        /* Цвет для активных и неактивных выпадающих окон */
-        .select2-container--default .select2-selection--single {
-            background-color: #e6e6fa;
-            border-color: #ccc;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            color: #5C4B9A;
-            font-family: 'DIN Pro', sans-serif;
-        }
-
-        .select2-container--default .select2-selection--single .select2-selection__arrow {
-            border-left: 1px solid #ccc;
-        }
-
-        /* Цвет для отключенного выпадающего списка */
-        .select2-container--default.select2-container--disabled .select2-selection--single {
-            background-color: #e6e6fa !important;
-            color: #5C4B9A;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            border: 1px solid #ccc;
-            width: 300px;
-            margin-bottom: 20px;
-            background-color: #e6e6fa;
-        }
-
-        .instruction {
-            font-family: 'DIN Pro', sans-serif;
-            color: #2b2765;
-            font-size: 24px;
-            font-weight: 300;
-        }
-
-        .instruction1 {
-            font-family: 'DIN Pro', sans-serif;
-            color: #2b2765;
-            max-width: 880px;
-            font-size: 24px;
-            font-weight: 300;
-            margin-bottom: 20px;
-        }
-
-        .success-icon {
-            display: none;
-            width: 20px;
-            height: 20px;
-            margin-left: 10px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="/style.css"> <!-- Подключаем css файл со стилем -->
 </head>
 <body>
-
 <!-- Прямоугольник наверху страниц -->
 <div id="header"></div>
-
 <!-- Логотип на обеих страницах -->
 <div id="logo">
-    <img src="logo.png" alt="Логотип">
+    <img src="/img/logo.png" alt="Логотип">
 </div>
-
 <!-- Страница ввода имени -->
 <div id="namePage">
     <p class="instruction1">
-        <b>Введите свою фамилию</b> для доступа к списку ваших контрагентов (если вы не найдете каких-либо данных, обратитесь в ФО).<br>
-        <br>
+        <b>Введите свою фамилию</b> для доступа к списку ваших контрагентов (если вы не найдете каких-либо данных, обратитесь в ФО).<br><br>
     </p>
-    <input type="text" id="userName" placeholder="Введите ваше имя" />
+    <input type="text" id="userName" placeholder="Введите вашу фамилию" />
     <button id="startBtn">Старт</button>
-    <!-- <p class="instruction1">
-        Это нужно для выгрузки данных о контрагентах конкретного продавца.
-    </p> -->
 </div>
-
 <!-- Страница с выпадающими списками -->
 <div id="dropdownPage">
-
     <!-- Контейнер для текста с инструкцией -->
     <div class="instruction-wrapper">
         <p class="instruction">
-            Если в вашем шаблоне для планирования выручки не хватает исходных данных (отсутствует необходимый <b>контрагент/конечный получатель/номенклатура</b>), необходимо с помощью данного инструмента составить список и выслать его Анжеле Ананян.<br>
-            <br>
-
+            Если в вашем шаблоне для планирования выручки не хватает исходных данных (отсутствует необходимый <b>контрагент/конечный получатель/номенклатура</b>), необходимо с помощью данного инструмента составить список и выслать его Анжеле Ананян.<br><br>
             Выберите необходимые данные в выпадающих списках.</br>
-            <!-- <ul>
-                <li>После выбора номенклатурной группы можно будет выбрать либо все номенклатуры из данной группы, либо те, на которые будет запланирована выручка.</li>
-                <li>Удерживая клавишу Ctrl, можно выбрать несколько номенклатур одновременно.</li>
-            </ul> -->
-            * После выбора номенклатурной группы можно будет выбрать либо все номенклатуры из данной группы, либо те, на которые будет запланирована выручка.</br>
-            <br>
+            * После выбора номенклатурной группы можно будет выбрать либо все номенклатуры из данной группы, либо те, на которые будет запланирована выручка.</br><br>
             После выбора необходимых номенклатур по комбинации Контрагент-Конечник-НГ необходимо нажать кнопку «Добавить». Данные будут добавлены в таблицу.
-            
-            Необходимо повторить данный алгоритм столько раз, сколько комбинаций вам нужно добавить. ВАЖНО!!!! После ввода каждый раз нужно нажимать кнопку Добавить.<br>
-            
-            <br>Когда все данные добавлены, нажмите кнопку Скачать Excel.
-            
-            Файл появится в Загрузках. <b>Пожалуйста, зайдите и проверьте корректность и полноту данных</b>. Затем направьте данный файл Анжеле Ананян для добавления в ваш шаблон.
-            
-            <br>
+            Необходимо повторить данный алгоритм столько раз, сколько комбинаций вам нужно добавить. ВАЖНО!!!! После ввода каждый раз нужно нажимать кнопку Добавить.<br><br>Когда все данные добавлены, нажмите кнопку Скачать Excel.
+            Файл появится в Загрузках. <b>Пожалуйста, зайдите и проверьте корректность и полноту данных</b>. Затем направьте данный файл Анжеле Ананян для добавления в ваш шаблон.<br>
         </p>
     </div>
-
     <div class="dropdown-wrapper" id="dropdownGroupWrapper">
         <div class="dropdown-container" id="dropdownGroup">
             <!-- Первый выпадающий список -->
@@ -207,21 +43,18 @@
                     <option value="">Выберите контрагента</option>
                 </select>
             </div>
-
             <!-- Второй выпадающий список -->
             <div class="dropdown-element">
                 <select class="select2" id="dropdown3">
                     <option value="">Выберите конечного получателя</option>
                 </select>
             </div>
-
             <!-- Третий выпадающий список (категории) -->
             <div class="dropdown-element">
                 <select class="select2" id="dropdownCategory">
                     <option value="">Выберите продуктовое направление</option>
                 </select>
             </div>
-
             <!-- Четвертый выпадающий список (товары по выбранной категории) -->
             <div class="dropdown-element">
                 <select class="select2" id="dropdownGood" disabled multiple>
@@ -229,237 +62,22 @@
                     <option value="">Номенклатура</option>
                 </select>
             </div>
-
             <!-- Кнопка Добавить -->
             <button id="addBtn">Добавить</button>
-            <img class="success-icon" id="successIcon" src="success.png" alt="Success">
+            <img class="success-icon" id="successIcon" src="img/success.png" alt="Success">
         </div>
     </div>
-
     <div class="button-group">
         <button id="downloadBtn">Скачать Excel</button>
     </div>
     <br><br><br><br><br><br><br><br><br>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-style/0.8.13/xlsx.full.min.js"></script>
-<script src="agents.js"></script> <!-- Подключаем файл со словарем agents -->
-<script src="goods.js"></script> <!-- Подключаем файл со словарем goods -->
-
-<script>
-    $(document).ready(function() {
-        let excelData = [];  // Массив для хранения строк данных
-
-        const headers = ["УИД Контрагент", "Контрагент.Код", "Контрагент", "УИД Конечный получатель", "Конечный получатель код",
-         "Конечный получатель", "УИД Продуктовое направление", "Продуктовое направление", "УИД Номенклатурная группа", "Номенклатурная группа",
-          "УИД Номенклатура", "Номенклатура.Артикул", "Номенклатура", "Номенклатура.Архивная", "УИД Единица измерения", "Единица измерения", "Цена с НДС за единицу измерения в валюте", "Валюта"];
-        excelData.push(headers);
-
-        let dropdownGroupIndex = 1; // Индекс для создания уникальных идентификаторов для каждой группы полей
-
-        $('.select2').select2();
-
-        // Показать начальную страницу
-        $('#namePage').show();
-
-        let userNameGlobal = ''; // Глобальная переменная для хранения имени пользователя
-
-        $('#startBtn').on('click', startProcess);
-
-        $('#userName').on('keydown', function(e) {
-            if (e.keyCode === 13) {
-                startProcess();
-            }
-        });
-
-        function startProcess() {
-            let userName = $('#userName').val().charAt(0).toUpperCase() + $('#userName').val().slice(1).toLowerCase();
-            if (!userName) {
-                alert("Введите ваше имя");
-                return;
-            }
-
-            userNameGlobal = userName;
-
-            if (agents[userName]) {
-                let products = agents[userName];
-
-                // Добавляем только один начальный набор полей при нажатии кнопки "Старт"
-                $('#dropdownGroupWrapper').empty();  // Удаляем все предыдущие элементы, если они есть
-                addDropdownGroup(products, dropdownGroupIndex);
-
-                $('#namePage').hide();
-                $('#dropdownPage').show();
-            } else {
-                alert("Имя не найдено в базе");
-            }
-        }
-
-        // Функция добавления группы полей
-        function addDropdownGroup(products, index) {
-            $('#dropdownGroupWrapper').append(`
-                <div class="dropdown-container" id="dropdownGroup${index}" style="display: flex; align-items: center; gap: 15px;">
-                    <div class="dropdown-element" style="margin-right: 10px;">
-                        <select class="select2" id="dropdown1-${index}">
-                            <option value="">Контрагент</option>
-                        </select>
-                    </div>
-                    <div class="dropdown-element" style="margin-right: 10px;">
-                        <select class="select2" id="dropdown3-${index}">
-                            <option value="">Конечник</option>
-                        </select>
-                    </div>
-                    <div class="dropdown-element" style="margin-right: 10px;">
-                        <select class="select2" id="dropdownCategory-${index}">
-                            <option value="">Группа</option>
-                        </select>
-                    </div>
-                    <div class="dropdown-element" style="margin-right: 10px;">
-                        <select class="select2" id="dropdownGood-${index}" disabled multiple>
-                            <option value="all">Выбрать все</option>
-                            <option value="">Номенклатура</option>
-                        </select>
-                    </div>
-                    <button class="add-btn" id="addBtn-${index}" style="padding: 10px 20px; font-family: 'DIN Pro', sans-serif; color: white; background-color: #5C4B9A; border: none; cursor: pointer;">
-                        Добавить
-                    </button>
-                    <img class="success-icon" id="successIcon-${index}" src="success.png" alt="Success">
-                </div>
-            `);
-
-            // Заполнение первого и второго выпадающего списка
-            updateDropdown1Options(products, index);
-            updateDropdown3Options(products, index);
-            updateDropdownCategoryOptions(index);
-
-            // Реинициализация select2 для новых элементов
-            $(`#dropdown1-${index}, #dropdown3-${index}, #dropdownCategory-${index}, #dropdownGood-${index}`).select2();
-
-            // Назначение события для новой кнопки "Добавить"
-            $(`#addBtn-${index}`).on('click', function() {
-                handleAddButton(index);
-            });
-        }
-
-        function updateDropdown1Options(products, index) {
-            products.forEach(function(product) {
-                $(`#dropdown1-${index}`).append('<option value="' + product[0] + '">' + product[0] + '</option>');
-            });
-        }
-
-        function updateDropdown3Options(products, index) {
-            products.forEach(function(product) {
-                $(`#dropdown3-${index}`).append('<option value="' + product[0] + '">' + product[0] + '</option>');
-            });
-        }
-
-        function updateDropdownCategoryOptions(index) {
-            Object.keys(goods).forEach(function(category) {
-                $(`#dropdownCategory-${index}`).append('<option value="' + category + '">' + category + '</option>');
-            });
-
-            $(`#dropdownCategory-${index}`).on('change', function() {
-                let selectedCategory = $(this).val();
-                if (selectedCategory) {
-                    $(`#dropdownGood-${index}`).prop('disabled', false);
-                    updateDropdownGoodOptions(selectedCategory, index);
-                } else {
-                    $(`#dropdownGood-${index}`).prop('disabled', true).empty().append('<option value="">Номенклатура</option>');
-                }
-            });
-        }
-
-        function updateDropdownGoodOptions(category, index) {
-            $(`#dropdownGood-${index}`).empty().append('<option value="all">Выбрать все</option>');
-
-            goods[category].forEach(function(good) {
-                let encodedGood = encodeURIComponent(good[0]);
-                $(`#dropdownGood-${index}`).append('<option value="' + encodedGood + '">' + good[0] + '</option>');
-            });
-
-            $(`#dropdownGood-${index}`).select2();
-
-            $(`#dropdownGood-${index}`).on('change', function() {
-                let selectedOptions = $(this).val();
-                if (selectedOptions.includes('all')) {
-                    $(`#dropdownGood-${index}`).val(['all']);
-                }
-            });
-        }
-
-        function handleAddButton(index) {
-            let product1Index = $(`#dropdown1-${index} option:selected`).val();
-            let product2Index = $(`#dropdown3-${index} option:selected`).val();
-            let category = $(`#dropdownCategory-${index} option:selected`).text();
-            let selectedGoods = $(`#dropdownGood-${index}`).val();
-
-            if (!product1Index || !product2Index || !category || !selectedGoods || selectedGoods.length === 0) {
-                alert("Пожалуйста, выберите данные для всех полей.");
-                return;
-            }
-
-            if (selectedGoods.includes('all')) {
-                goods[category].forEach(function(good) {
-                    let rowData = [
-                        agents[userNameGlobal][0][2], agents[userNameGlobal][0][1], product1Index,
-                        agents[userNameGlobal][0][2], agents[userNameGlobal][0][1], product2Index,
-                        good[1], good[1], good[2], good[3], good[4], good[5], good[0], good[6], good[7], good[8], good[9], good[10]
-                    ];
-                    excelData.push(rowData);
-                });
-            } else {
-                selectedGoods.forEach(function(encodedGoodIndex) {
-                    let goodIndex = decodeURIComponent(encodedGoodIndex);
-                    let good = goods[category].find(arr => arr[0] === goodIndex);
-                    let rowData = [
-                        agents[userNameGlobal][0][2], agents[userNameGlobal][0][1], product1Index,
-                        agents[userNameGlobal][0][2], agents[userNameGlobal][0][1], product2Index,
-                        good[1], good[1], good[2], good[3], good[4], good[5], good[0], good[6], good[7], good[8], good[9], good[10]
-                    ];
-                    excelData.push(rowData);
-                });
-            }
-
-            // Показать success icon после успешного добавления данных
-            $(`#successIcon-${index}`).show();
-
-            dropdownGroupIndex++;
-            addDropdownGroup(agents[userNameGlobal], dropdownGroupIndex);
-        }
-
-        $('#downloadBtn').on('click', function() {
-    if (excelData.length === 0) {
-        alert("Нет данных для скачивания");
-        return;
-    }
-
-    let wb = XLSX.utils.book_new();
-    let ws = XLSX.utils.aoa_to_sheet(excelData);
-
-    // Применение серого фона для первой строки
-    const range = XLSX.utils.decode_range(ws['!ref']);
-    for (let col = range.s.c; col <= range.e.c; col++) {
-        const cellAddress = XLSX.utils.encode_cell({r: 0, c: col}); // Ячейки первой строки
-        if (!ws[cellAddress]) continue; // Если ячейка не существует
-        ws[cellAddress].s = {
-            fill: {
-                fgColor: { rgb: "C0C0C0" } // Серый цвет
-            },
-            font: {
-                bold: true // Жирный шрифт для заголовков
-            }
-        };
-    }
-
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-    XLSX.writeFile(wb, `${userNameGlobal}.xlsx`); 
-});
-
-    });
-</script>
-
+<script src="script/agents.js"></script> <!-- Подключаем файл со словарем agents -->
+<script src="script/goods.js"></script> <!-- Подключаем файл со словарем goods -->
+<script type="module" src="script/script.js"></script> <!-- Подключаем файл с основным скриптом -->
 </body>
 </html>
